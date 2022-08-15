@@ -3,9 +3,6 @@ import { Route, Routes, Link } from 'react-router-dom';
 // import * as BooksAPI from './BooksAPI'
 import './App.css';
 import Header from './components/Header';
-import Shelves from './components/Shelves';
-
-
 class BooksApp extends Component {
   bookshelves = [
     { shelf: 'Currently Reading' },
@@ -26,28 +23,79 @@ class BooksApp extends Component {
         title: "To Kill a Mockingbird",
         author: "Harper Lee",
         shelf: ""
-      }
+      },
 
     ]
   };
 
   render() {
     return (
-      <div>
-        <div className="list-books">
-          <Header />
-          <div className="list-books-content">
-            <Shelves books={this.state.books}/>
-          </div>
-          <div className="open-search">
-            <Link to="Search">
-              <button>Add a Book</button>
-            </Link>
-            {}
+      <div className="app">
+        <Routes>
+          <Route exact path="/" element={<List/>} />
+          <Route path="/search" element={<Search/>} />
+        </Routes>
+      </div>
+    );
+  }
+}
+
+class List extends Component {
+  render() {
+    return (
+      <div className="list-books">
+        <Header />
+        <div className="list-books-content">
+          <div>
+            <div className="bookshelf">
+              <h2 className="bookshelf-title">Currently Reading</h2>
+              <div className="bookshelf-books">
+                <ol className="books-grid">
+                  <li>
+                    <div className="book">
+                      <div className="book-top">
+                        <div
+                          className="book-cover"
+                          style={{
+                            width: 128,
+                            height: 193,
+                            backgroundImage:
+                              'url("")',
+                          }}
+                        />
+                        <div className="book-shelf-changer">
+                          <select>
+                            <option value="move" disabled>
+                              Move to...
+                            </option>
+                            <option value="currentlyReading">
+                              Currently Reading
+                            </option>
+                            <option value="wantToRead">Want to Read</option>
+                            <option value="read">Read</option>
+                            <option value="none">None</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="book-title"></div>
+                      <div className="book-authors">Harper Lee</div>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+
           </div>
         </div>
+        <div className="open-search">
+          <Link to="Search">
+            <button>Add a Book</button>
+          </Link>
+          {/* <button onClick={() => this.setState({ showSearchPage: true })}>
+            Add a book
+          </button> */}
+        </div>
       </div>
-      
     );
   }
 }
