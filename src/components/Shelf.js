@@ -8,9 +8,11 @@ const Shelf = ({books}) => {
               <h2 className="bookshelf-title">Currently Reading</h2>
               <div className="bookshelf-books">
                 <ol className="books-grid">
-                  <li>
-                    <Book></Book>
-                  </li>
+                  {books.map((b) => 
+                    <li>
+                      <Book books={b}></Book>
+                    </li>
+                  )}
                 </ol>
               </div>
             </div>
