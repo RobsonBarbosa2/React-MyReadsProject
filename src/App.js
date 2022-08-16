@@ -4,7 +4,7 @@ import { Route, Routes, Link } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import Shelves from './components/Shelves';
-import Book from './components/Book';
+
 
 
 class BooksApp extends Component {
@@ -27,8 +27,13 @@ class BooksApp extends Component {
         title: "To Kill a Mockingbird",
         author: "Harper Lee",
         shelf: "currentlyReading"
+      },
+      {
+        url: "http://books.google.com/books/content?id=PGR2AwAAQBAJ&printsec=frontcover&img=1&zoom=1&imgtk=AFLRE73-GnPVEyb7MOCxDzOYF1PTQRuf6nCss9LMNOSWBpxBrz8Pm2_mFtWMMg_Y1dx92HT7cUoQBeSWjs3oEztBVhUeDFQX6-tWlWz1-feexS0mlJPjotcwFqAg6hBYDXuK_bkyHD-y&source=gbs_api",
+        title: "To Kill a Mockingbird",
+        author: "Harper Lee",
+        shelf: "wantToRead"
       }
-
     ]
   };
 
