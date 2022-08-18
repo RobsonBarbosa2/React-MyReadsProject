@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { Route, Routes, Link } from 'react-router-dom';
-// import * as BooksAPI from './BooksAPI'
+import * as BooksAPI from './BooksAPI'
 import './App.css';
 import Header from './components/Header';
 import Shelves from './components/Shelves';
@@ -13,6 +13,16 @@ const BooksApp = () => {
     { shelf: 'Want to Read' },
     { shelf: 'Have Read' },
   ];
+
+    useEffect (() => {
+      BooksAPI.getAll() 
+      .then(data => 
+        {
+          console.log(data)
+          setBooks(data)
+        }
+      );
+    }, [])
 
     const startBooks = [
       {
