@@ -1,12 +1,11 @@
 import React from 'react'
 
 
-const Book = ({ books }) => {
+const Book = ({ books, changeShelf }) => {
 
-    const changeBookShelf = () => {}
 
   return (
-    <div className="book">
+    <div className="book" key={books.id}>
         <div className="book-top">
         <div
             className="book-cover"
@@ -18,7 +17,7 @@ const Book = ({ books }) => {
             }}
         />
         <div className="book-shelf-changer">
-            <select defaultValue={books.shelf} /*onChange={(e) => changeBookShelf(book, e.target.value)} */>
+            <select defaultValue={books.shelf} onChange={(e) => changeShelf(books, e.target.value)}>
                 <option value="move" disabled>
                     Move to...
                 </option>
