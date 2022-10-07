@@ -11,25 +11,55 @@ const BooksApp = () => {
   const [showSearchPage, setShowSearchPage] = useState(false);
   const [query, setQuery] = useState([]);
   const [books, setBooks] = useState([]);
+  const [merged, setMerged] = useState([]);
+  const [mapOfIdToBooks, setmapOfIdToBooks] = useState(new Map());
+
+  useEffect(() => {
+    const combined = SearchBooks.map((book) => {
+      if (mapOfIdToBooks.has(book.id)) {
+        return mapOfIdToBooks.get(book.id);
+      } else {
+        return book;
+      }
+    });
+    setMerged(combined);
+  }, [SearchBooks]);
 
   useEffect(() => {
     BooksAPI.getAll().then((data) => {
       setBooks(data);
+      setmapOfIdToBooks(createMapOfBooks(data));
     });
   }, []);
 
   useEffect(() => {
+    let isActivated = true;
+
     if (query) {
       BooksAPI.search(query).then((data) => {
         console.log(data);
         if (data.error) {
           setSearchBooks([]);
         } else {
-          setSearchBooks(data);
+          if (isActivated) {
+            setSearchBooks(data);
+          }
         }
       });
     }
+    return () => {
+      isActivated = false;
+      setSearchBooks([]);
+    };
   }, [query]);
+
+  const createMapOfBooks = (books) => {
+    const map = new Map();
+    books.forEach((book) => {
+      map.set(book.id, book);
+    });
+    return map;
+  };
 
   const updateBookShelf = (book, whereTo) => {
     const updatedBooks = books.map((b) => {
@@ -40,6 +70,7 @@ const BooksApp = () => {
       return b;
     });
     setBooks(updatedBooks);
+    BooksAPI.update(book, whereTo);
   };
 
   return (
@@ -71,7 +102,7 @@ const BooksApp = () => {
           </div>
           <div className="search-books-results">
             <ol className="books-grid">
-              {SearchBooks.map((b) => (
+              {merged.map((b) => (
                 <li key={b.id}>
                   <Book books={b} changeShelf={updateBookShelf} />
                 </li>
