@@ -5,6 +5,8 @@ import "./App.css";
 import Header from "./components/Header";
 import Shelves from "./components/Shelves";
 import Book from "./components/Book";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const BooksApp = () => {
   const [SearchBooks, setSearchBooks] = useState([]);
@@ -74,6 +76,7 @@ const BooksApp = () => {
     }
     setBooks(updatedBooks);
     BooksAPI.update(book, whereTo);
+    toast.success(`Moved ${book.title} to ${whereTo}`);
   };
 
   return (
@@ -126,6 +129,16 @@ const BooksApp = () => {
           </div>
         </Route>
       </Router>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnVisibilityChange
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };
