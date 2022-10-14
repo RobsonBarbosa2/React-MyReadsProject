@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import * as BooksAPI from "./BooksAPI";
 import "./App.css";
 import Header from "./components/Header";
@@ -8,7 +8,6 @@ import Book from "./components/Book";
 
 const BooksApp = () => {
   const [SearchBooks, setSearchBooks] = useState([]);
-  const [showSearchPage, setShowSearchPage] = useState(false);
   const [query, setQuery] = useState([]);
   const [books, setBooks] = useState([]);
   const [merged, setMerged] = useState([]);
@@ -69,58 +68,64 @@ const BooksApp = () => {
       }
       return b;
     });
+    if (!mapOfIdToBooks.has(book.id)) {
+      book.shelf = whereTo;
+      updatedBooks.push(book);
+    }
     setBooks(updatedBooks);
     BooksAPI.update(book, whereTo);
   };
 
   return (
     <div className="app">
-      {showSearchPage ? (
-        <div className="search-books">
-          <div className="search-books-bar">
-            <button
-              className="close-search"
-              onClick={() => setShowSearchPage(false)}
-            >
-              Close
-            </button>
-            <div className="search-books-input-wrapper">
-              {/*
+      <Router>
+        <Route exact path="/">
+          <div className="list-books">
+            <Header />
+            <div className="list-books-content">
+              <Shelves books={books} updateBookShelf={updateBookShelf} />
+            </div>
+            <div className="open-search">
+              <Link to={"/search"}>
+                <button>Add a book</button>
+              </Link>
+            </div>
+          </div>
+        </Route>
+        <Route path="/search">
+          <div className="search-books">
+            <div className="search-books-bar">
+              <Link to={"/"}>
+                <button className="close-search">Close</button>
+              </Link>
+              <div className="search-books-input-wrapper">
+                {/*
                   NOTES: The search from BooksAPI is limited to a particular set of search terms.
                   You can find these search terms here:
                   https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
                   However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
-              <input
-                type="text"
-                placeholder="Search by title or author"
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-              />
+                <input
+                  type="text"
+                  placeholder="Search by title or author"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                />
+              </div>
+            </div>
+            <div className="search-books-results">
+              <ol className="books-grid">
+                {merged.map((b) => (
+                  <li key={b.id}>
+                    <Book books={b} changeShelf={updateBookShelf} />
+                  </li>
+                ))}
+              </ol>
             </div>
           </div>
-          <div className="search-books-results">
-            <ol className="books-grid">
-              {merged.map((b) => (
-                <li key={b.id}>
-                  <Book books={b} changeShelf={updateBookShelf} />
-                </li>
-              ))}
-            </ol>
-          </div>
-        </div>
-      ) : (
-        <div className="list-books">
-          <Header />
-          <div className="list-books-content">
-            <Shelves books={books} updateBookShelf={updateBookShelf} />
-          </div>
-          <div className="open-search">
-            <button onClick={() => setShowSearchPage(true)}>Add a book</button>
-          </div>
-        </div>
-      )}
+        </Route>
+      </Router>
     </div>
   );
 };
