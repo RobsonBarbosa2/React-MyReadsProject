@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Book = ({ books, changeShelf }) => {
   const thumb = books.imageLinks;
@@ -42,3 +43,8 @@ const Book = ({ books, changeShelf }) => {
 };
 
 export default Book;
+
+Book.propTypes = {
+  books: PropTypes.object.isRequired,
+  changeShelf: PropTypes.func.isRequired,
+};
