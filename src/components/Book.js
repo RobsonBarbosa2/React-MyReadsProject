@@ -5,7 +5,7 @@ const Book = ({ books, changeShelf }) => {
   function getThumb(thumb) {
     let thumbUrl = thumb
       ? thumb.smallThumbnail
-      : console.log("https://via.placeholder.com/128x193?text=No%20Cover");
+      : "https://via.placeholder.com/128x193?text=No%20Cover";
     console.log(thumbUrl);
     return thumbUrl;
   }
