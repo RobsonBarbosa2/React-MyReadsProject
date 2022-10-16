@@ -1,6 +1,14 @@
 import React from "react";
 
 const Book = ({ books, changeShelf }) => {
+  const thumb = books.imageLinks;
+  function getThumb(thumb) {
+    let thumbUrl = thumb
+      ? thumb.smallThumbnail
+      : console.log("https://via.placeholder.com/128x193?text=No%20Cover");
+    console.log(thumbUrl);
+    return thumbUrl;
+  }
   return (
     <div className="book" key={books.id}>
       <div className="book-top">
@@ -9,7 +17,7 @@ const Book = ({ books, changeShelf }) => {
           style={{
             width: 128,
             height: 193,
-            backgroundImage: `url(${books.imageLinks.smallThumbnail})`,
+            backgroundImage: `url(${getThumb(thumb)})`,
           }}
         />
         <div className="book-shelf-changer">
@@ -27,8 +35,8 @@ const Book = ({ books, changeShelf }) => {
           </select>
         </div>
       </div>
-      <div className="book-title"> {books.title}</div>
-      <div className="book-authors"> {books.authors}</div>
+      <div className="book-title"> {books.title && books.title}</div>
+      <div className="book-authors"> {books.authors && books.authors}</div>
     </div>
   );
 };
