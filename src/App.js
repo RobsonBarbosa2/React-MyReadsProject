@@ -7,6 +7,7 @@ import Shelves from "./components/Shelves";
 import Book from "./components/Book";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDebounce } from "use-debounce";
 
 const BooksApp = () => {
   const [SearchBooks, setSearchBooks] = useState([]);
@@ -14,6 +15,7 @@ const BooksApp = () => {
   const [books, setBooks] = useState([]);
   const [merged, setMerged] = useState([]);
   const [mapOfIdToBooks, setmapOfIdToBooks] = useState(new Map());
+  const [debouncedQuery] = useDebounce(query, 500);
 
   useEffect(() => {
     const combined = SearchBooks.map((book) => {
@@ -52,7 +54,7 @@ const BooksApp = () => {
       isActivated = false;
       setSearchBooks([]);
     };
-  }, [query]);
+  }, [debouncedQuery]);
 
   const createMapOfBooks = (books) => {
     const map = new Map();
